@@ -41,8 +41,8 @@ app.get("/api/note/:id", async(req, res, next) =>{
 
 app.post("/api/notes", async (req, res, next) =>{
     try{
-    const {title, contents} = req.body
-    const note = await createNote(title, contents)
+    const {user_id,title, contents} = req.body
+    const note = await createNote(user_id,title, contents)
     res.status(201).send(note)
     }
     catch (e){
@@ -111,7 +111,7 @@ if(await IsAdmin(username,password) >= 1){
   */ 
     
     else{
-        await deletePost(id)
+        await deletePost(id, username, password)
         return res.status(200).send({message: "Blog deleted successfully"})
     }
     
@@ -120,8 +120,8 @@ if(await IsAdmin(username,password) >= 1){
 
 app.patch("/api/post" , async (req, res, next) => {
     try{
-    const {id, content} = req.body
-    const note = await updatePost(id, content)
+    const {id, content, password} = req.body
+    const note = await updatePost(id, content, password)
     res.status(201).send(note)
     }
     catch (e){
@@ -131,8 +131,8 @@ app.patch("/api/post" , async (req, res, next) => {
 
 app.patch("/api/user" , async (req, res, next) => {
     try{
-    const {id, content} = req.body
-    const note = await updateUser(id, content)
+    const {id,username, old_username, password} = req.body
+    const note = await updateUser(id,username, old_username, password)
     res.status(201).send(note)
     }
     catch (e){

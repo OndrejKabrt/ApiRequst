@@ -96,7 +96,7 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       
-                <a class='nav-item nav-link active' aria-current='page' href='/tadeasApi.html'>Tadeas Pirich</a>";
+                <a class='nav-item nav-link active' aria-current='page' href='/index.html'>Domaci Api</a>";
                 <a class='nav-item nav-link active' aria-current='page' href='/tomasApi.html'>Tomas Krizko</a>";
             
     </div>
@@ -118,7 +118,7 @@
     <script>
     async function fetchNotes() {
             try {
-                const response = await fetch('http://127.0.0.1:8080/api/notes');
+                const response = await fetch('http://18.199.167.118:8080/api/blog');
                 if (!response.ok) {
                     throw new Error('Failed to fetch notes');
                 }
@@ -136,7 +136,7 @@
                     row.appendChild(titleCell);
 
                     const contentCell = document.createElement('td');
-                    contentCell.textContent = note.post;
+                    contentCell.textContent = note.contents;
                     row.appendChild(contentCell);
 
                     const createdCell = document.createElement('td');

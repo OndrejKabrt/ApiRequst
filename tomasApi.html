@@ -96,8 +96,9 @@
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
       
+                <a class='nav-item nav-link active' aria-current='page' href='/index.html'>Domaci Api</a>";
                 <a class='nav-item nav-link active' aria-current='page' href='/tadeasApi.html'>Tadeas Pirich</a>";
-                <a class='nav-item nav-link active' aria-current='page' href='/tomasApi.html'>Tomas Krizko</a>";
+                
             
     </div>
   </div>
@@ -118,7 +119,7 @@
     <script>
     async function fetchNotes() {
             try {
-                const response = await fetch('http://127.0.0.1:8080/api/notes');
+                const response = await fetch('http://79.76.122.33/api/blog');
                 if (!response.ok) {
                     throw new Error('Failed to fetch notes');
                 }
@@ -132,15 +133,15 @@
                     const row = document.createElement('tr');
 
                     const titleCell = document.createElement('td');
-                    titleCell.textContent = note.title;
+                    titleCell.textContent = note.author;
                     row.appendChild(titleCell);
 
                     const contentCell = document.createElement('td');
-                    contentCell.textContent = note.post;
+                    contentCell.textContent = note.content;
                     row.appendChild(contentCell);
 
                     const createdCell = document.createElement('td');
-                    createdCell.textContent = note.created;
+                    createdCell.textContent = note.creation_date;
                     row.appendChild(createdCell);
 
                     notesList.appendChild(row);

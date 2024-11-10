@@ -50,14 +50,14 @@ export async function getNoteBytitle(title){
 
 
 export async function createUser(username, password) {
-    const [result] = await pool.query('INSERT INTO user (username, password, admin) VALUES (?,?,?)',[username, password, 0])
+    const [result] = await pool.query('INSERT INTO user (username, password, admin) VALUES (?,?,0)',[username, password])
     const id = result.insertId
     return getNote(id)
 }
 
 
 export async function deletePost(id, username, password){
-    const [rows] =await pool.query('DELETE FROM notes Where id = ? AND owner_id = (select id from user where username = ? AND password = ? OR admin)', [id, username, password])
+    const [rows] =await pool.query('DELETE FROM notes Where id = ? AND owner_id = (select id from user where password = ? OR admin)', [id, username, password])
     return rows[0]
 }
 
