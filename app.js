@@ -15,7 +15,6 @@ app.use(express.json())
 app.use(cors());
 app.use("/api/about", swaggerUi.serve, swaggerUi.setup(docYaml));
 
-/*app.use(cors());*/
 
 app.get("/api/notes", async (req, res, next) => {
     try{
@@ -100,15 +99,7 @@ app.delete("/api/post/:id",async(req,res) => {
     if(!await getNote(id)){
         return res.status(404).send({ message: "Blog not found" });
     }
-    /* #Z kodu Adama Hlavačika 
-if(await IsAdmin(username,password) >= 1){
- await deletePost(id) return res.status(200).send({message: "Blog deleted successfully"})
-}
-  const user_id = await GetBlogUser(id); if(await CheckUser(username,password) != user_id)
-  { 
-  return res.status(403).send({message: "Not allowed"}) 
-  } 
-  */ 
+ 
     
     else{
         await deletePost(id, username, password)
@@ -149,13 +140,3 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     return('Server is running on port 8080')
 })
-
-
-  /* app.delete("/api/user/:id", async (req,res, next) => {
-    try{ const id = req.params.id
-    const response = await deleteUser(id) 
-    if (response > 0)res.status(200).send(""); 
-    else res.status(404).send("Not found"); } 
-    catch (e){ next(e) } }) */
-
-/*pro spusteni zadej node app.js*/

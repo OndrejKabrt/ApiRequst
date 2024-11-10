@@ -1,31 +1,16 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
   title: Notes API
-  description: API for managing users and notes
+  description: API for managing notes and users
   version: 1.0.0
-
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8080/api
     description: Local server
 
 paths:
-  /api/about:
-    get:
-      summary: Swagger UI Documentation
-      operationId: getAbout
-      responses:
-        '200':
-          description: Swagger UI
-          content:
-            text/html:
-              schema:
-                type: string
-                example: "<html>...</html>"
-
-  /api/notes:
+  /notes:
     get:
       summary: Get all notes
-      operationId: getNotes
       responses:
         '200':
           description: A list of notes
@@ -44,10 +29,8 @@ paths:
                       type: string
                     contents:
                       type: string
-
     post:
       summary: Create a new note
-      operationId: createNote
       requestBody:
         required: true
         content:
@@ -78,19 +61,19 @@ paths:
                   contents:
                     type: string
 
-  /api/note/{id}:
+  /note/{id}:
     get:
-      summary: Get a single note by ID
-      operationId: getNoteById
+      summary: Get a note by its ID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
+          description: The ID of the note
           schema:
             type: integer
       responses:
         '200':
-          description: A single note
+          description: The note
           content:
             application/json:
               schema:
@@ -107,19 +90,19 @@ paths:
         '404':
           description: Note not found
 
-  /api/note/{title}:
+  /note/{title}:
     get:
-      summary: Get a note by title
-      operationId: getNoteByTitle
+      summary: Get a note by its title
       parameters:
-        - in: path
-          name: title
+        - name: title
+          in: path
           required: true
+          description: The title of the note
           schema:
             type: string
       responses:
         '200':
-          description: A single note
+          description: The note
           content:
             application/json:
               schema:
@@ -136,10 +119,9 @@ paths:
         '404':
           description: Note not found
 
-  /api/users:
+  /users:
     get:
-      summary: Get a list of all users
-      operationId: getUsers
+      summary: Get the list of users
       responses:
         '200':
           description: A list of users
@@ -154,12 +136,8 @@ paths:
                       type: integer
                     username:
                       type: string
-                    password:
-                      type: string
-
     post:
       summary: Create a new user
-      operationId: createUser
       requestBody:
         required: true
         content:
@@ -183,22 +161,20 @@ paths:
                     type: integer
                   username:
                     type: string
-                  password:
-                    type: string
 
-  /api/user/{id}:
+  /user/{id}:
     get:
       summary: Get a user by ID
-      operationId: getUserById
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
+          description: The ID of the user
           schema:
             type: integer
       responses:
         '200':
-          description: A single user
+          description: The user
           content:
             application/json:
               schema:
@@ -208,19 +184,17 @@ paths:
                     type: integer
                   username:
                     type: string
-                  password:
-                    type: string
         '404':
           description: User not found
 
-  /api/post/{id}:
+  /post/{id}:
     delete:
-      summary: Delete a note by ID
-      operationId: deleteNote
+      summary: Delete a post by its ID
       parameters:
-        - in: path
-          name: id
+        - name: id
+          in: path
           required: true
+          description: The ID of the post
           schema:
             type: integer
       requestBody:
@@ -236,16 +210,13 @@ paths:
                   type: string
       responses:
         '200':
-          description: Note deleted successfully
+          description: Post deleted successfully
         '404':
-          description: Note not found
-        '403':
-          description: Not allowed to delete this note
+          description: Post not found
 
-  /api/post:
+  /post:
     patch:
-      summary: Update a note by ID
-      operationId: updateNote
+      summary: Update an existing post
       requestBody:
         required: true
         content:
@@ -261,7 +232,7 @@ paths:
                   type: string
       responses:
         '200':
-          description: Note updated successfully
+          description: Post updated successfully
           content:
             application/json:
               schema:
@@ -275,13 +246,10 @@ paths:
                     type: string
                   contents:
                     type: string
-        '404':
-          description: Note not found
 
-  /api/user:
+  /user:
     patch:
-      summary: Update a user by ID
-      operationId: updateUser
+      summary: Update user information
       requestBody:
         required: true
         content:
@@ -309,31 +277,10 @@ paths:
                     type: integer
                   username:
                     type: string
-                  password:
-                    type: string
-        '404':
-          description: User not found
 
-components:
-  schemas:
-    Note:
-      type: object
-      properties:
-        id:
-          type: integer
-        user_id:
-          type: integer
-        title:
-          type: string
-        contents:
-          type: string
-
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-        username:
-          type: string
-        password:
-          type: string
+  /about:
+    get:
+      summary: Get API documentation
+      responses:
+        '200':
+          description: Swagger UI documentation
