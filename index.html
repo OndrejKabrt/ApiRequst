@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Data Display</title>
+    <style> 
+        th{
+            color: #fff;
+        }
+    </style>
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
+integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+
+
+<body>
+    <table class=" table table-striped">
+        <tr class="bg-info">
+            <th>Title</th>
+            <th>Post</th>
+            <th>Datum</th>
+        </tr>
+
+        <tbody id="notes">
+
+        </tbody>
+    </table>
+
+    <script>
+    async function fetchNotes() {
+            try {
+                const response = await fetch('http://127.0.0.1:8080/api/notes');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch notes');
+                }
+                const notes = await response.json();
+
+                const notesList = document.getElementById('notes');
+
+                notesList.innerHTML = '';
+
+                notes.forEach(note => {
+                    const row = document.createElement('tr');
+
+                    const titleCell = document.createElement('td');
+                    titleCell.textContent = note.title;
+                    row.appendChild(titleCell);
+
+                    const contentCell = document.createElement('td');
+                    contentCell.textContent = note.post;
+                    row.appendChild(contentCell);
+
+                    const createdCell = document.createElement('td');
+                    createdCell.textContent = note.created;
+                    row.appendChild(createdCell);
+
+                    notesList.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching notes:", error);
+            }
+        }
+
+        window.onload = fetchNotes;
+    </script>
+
+</body>

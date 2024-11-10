@@ -1,6 +1,7 @@
 
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
+import { text } from 'express'
 dotenv.config()
 
 const pool = mysql.createPool({
@@ -22,8 +23,8 @@ export async function getNote(id){
     return rows[0]
 }
 
-export async function createNote(title, contents) {
-    const [result] = await pool.query('INSERT INTO notes (title, contents) VALUES (?,?)',[title, contents])
+export async function createNote(user_id,title, contents) {
+    const [result] = await pool.query('INSERT INTO notes (title, post, owner_id) VALUES (?,?,?)',[title, contents, user_id])
     const id = result.insertId
     return getNote(id)
 }
@@ -49,34 +50,39 @@ export async function getNoteBytitle(title){
 
 
 export async function createUser(username, password) {
-    const [result] = await pool.query('INSERT INTO user (username, password) VALUES (?,?)',[username, password])
+    const [result] = await pool.query('INSERT INTO user (username, password, admin) VALUES (?,?,?)',[username, password, 0])
     const id = result.insertId
     return getNote(id)
 }
 
 
-export async function deletePost(id){
-    const [rows] =await pool.query('DELETE FROM notes Where id = ?', [id])
+export async function deletePost(id, username, password){
+    const [rows] =await pool.query('DELETE FROM notes Where id = ? AND owner_id = (select id from user where username = ? AND password = ? OR admin)', [id, username, password])
     return rows[0]
 }
 
 
-export async function deleteUser(id){
-    const [rows] =await pool.query('DELETE FROM user Where id = ?', [id])
+export async function deleteUser(id,username,password){
+    const [rows] =await pool.query('DELETE FROM user Where id = ? AND usename = ? AND password = ?', [id, username, password])
     return rows[0]
 }
 
 
 
-export async function updatePost(id,content){
-    const [rows] =await pool.query('UPDATE notes SET contents = ? Where id = ?', [content,id])
+export async function updatePost(id,content, password){
+    const temp = await getNote(id)
+    if(content = null){
+        text = temp.text
+    }
+    const [rows] =await pool.query('UPDATE notes SET contents = ? Where id = ? owner_id = (select id from user where password = ?)', [content,id, password])
     return rows[0]
 }
 
-export async function updateUser(id,username){
-    const [rows] =await pool.query('UPDATE user SET username = ? Where id = ?', [username,id])
+export async function updateUser(id,username, old_username, password){
+    const [rows] =await pool.query('UPDATE user SET username = ? Where id = ? AND owner_id = (select id from user where username = ? AND password = ?)', [username,id, old_username, password])
     return rows[0]
 }
+
 
 export async function CheckUser(username,password){
     let result = await pool.query("select password,id from user where username = ?;", [username]);

@@ -1,6 +1,7 @@
 import express from 'express';
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
+import cors from 'cors';
 
 import {getNotes, getNote, createNote, getUserList, getUser , getNoteBytitle,
      createUser, deletePost, deleteUser, updatePost, updateUser,CheckUser} from './database.js';
@@ -11,6 +12,7 @@ const docYaml = YAML.load("./api.yaml");
 const app = express()
 
 app.use(express.json())
+app.use(cors());
 app.use("/api/about", swaggerUi.serve, swaggerUi.setup(docYaml));
 
 /*app.use(cors());*/
